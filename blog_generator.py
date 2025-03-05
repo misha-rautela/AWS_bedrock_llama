@@ -10,8 +10,8 @@ import response
 import datetime
 
 def blog_generate_using_bedrock(blogtopic:str)-> str:
-    prompt=f"""<s>[INST]Human: Write a 200 words blog on the topic {blogtopic}
-    Assistant:[/INST]
+    prompt=f"""<s>Human: Write a 200 words blog on the topic {blogtopic}
+    Assistant:
     """
     body={
         "prompt":prompt,
@@ -21,7 +21,7 @@ def blog_generate_using_bedrock(blogtopic:str)-> str:
     }
 
     try:
-        bedrock=boto3.client("bedrock-runtime",rregion_name="us-east-1",
+        bedrock=boto3.client("bedrock-runtime",region_name="us-east-1",
                             config=botocore.config.Config(read_timeout=300,retries={'max_attempts'=3}))
         response=bedrock.invoke_model(body=json.dumps(body),modelId="meta.llama3-8b-instruct-v1:0")
         response_content=response.get('body').read()
